@@ -1,6 +1,8 @@
 ﻿using ProductTypes;
 using Products;
 using System.Collections.Generic;
+using System.Collections.Immutable;
+using System.Reflection;
 
 //create a "products" variable here to include at least five Product instances. Give them appropriate ProductTypeIds.
 List<Product> products = new()
@@ -42,12 +44,12 @@ List<ProductType> productTypes = new()
 {
     new ProductType()
     {
-        Name = "Brass Instrument",
+        Title = "Brass Instrument",
         Id = 1
     },
     new ProductType()
     {
-        Name = "Poetry Book",
+        Title = "Poetry Book",
         Id = 2
     }
 };
@@ -78,6 +80,7 @@ void DisplayMenu()
         {
             case "1":
                 Console.Clear();
+                DisplayAllProducts(products, productTypes);
                 ReturnMessage();
                 Console.Clear();
                 break;
@@ -115,7 +118,12 @@ void DisplayMenu()
 
 void DisplayAllProducts(List<Product> products, List<ProductType> productTypes)
 {
-    throw new NotImplementedException();
+    for (int i = 0; i < products.Count; i++)
+    {
+        string title = productTypes.First(p => p.Id == products[i].ProductTypeId).Title;
+        
+        Console.WriteLine($"{i}. {products[i].Name} Price: ${products[i].Price} Type: {title}");
+    }
 }
 
 void DeleteProduct(List<Product> products, List<ProductType> productTypes)
