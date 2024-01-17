@@ -2,6 +2,6 @@ namespace ProductTypes;
 
 public class ProductType
 {
-    public string Name { get; set; }
+    public string Title { get; set; }
     public int Id { get; set; }
 }
