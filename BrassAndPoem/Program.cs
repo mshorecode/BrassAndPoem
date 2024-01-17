@@ -86,7 +86,8 @@ void DisplayMenu()
                 break;
 
             case "2":
-                Console.Clear();
+                // Console.Clear();
+                DeleteProduct(products, productTypes);
                 ReturnMessage();
                 Console.Clear();
                 break;
@@ -128,7 +129,24 @@ void DisplayAllProducts(List<Product> products, List<ProductType> productTypes)
 
 void DeleteProduct(List<Product> products, List<ProductType> productTypes)
 {
-    throw new NotImplementedException();
+    bool readResult = false;
+    Console.WriteLine($"Please choose a product to delete (0-{products.Count - 1}):\n");
+    DisplayAllProducts(products, productTypes);
+
+    while (!readResult)
+    {
+        readResult = int.TryParse(Console.ReadLine(), out int choice);
+        if (readResult && choice >= 0 && choice < products.Count)
+        {
+            products.RemoveAt(choice);
+
+            Console.WriteLine($"Product Removed");
+        }
+        else
+        {
+            Console.WriteLine($"You entered and invalid option. Please try again using 0-{products.Count - 1}.");
+        }
+    }    
 }
 
 void AddProduct(List<Product> products, List<ProductType> productTypes)
