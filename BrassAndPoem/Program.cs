@@ -1,9 +1,5 @@
 ﻿using ProductTypes;
 using Products;
-using System.Collections.Generic;
-using System.Collections.Immutable;
-using System.Reflection;
-using System.Xml.Serialization;
 
 //create a "products" variable here to include at least five Product instances. Give them appropriate ProductTypeIds.
 List<Product> products = new()
