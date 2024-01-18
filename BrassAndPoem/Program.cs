@@ -3,6 +3,7 @@ using Products;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Reflection;
+using System.Xml.Serialization;
 
 //create a "products" variable here to include at least five Product instances. Give them appropriate ProductTypeIds.
 List<Product> products = new()
@@ -86,7 +87,7 @@ void DisplayMenu()
                 break;
 
             case "2":
-                // Console.Clear();
+                Console.Clear();
                 DeleteProduct(products, productTypes);
                 ReturnMessage();
                 Console.Clear();
@@ -94,12 +95,14 @@ void DisplayMenu()
 
             case "3":
                 Console.Clear();
+                AddProduct(products, productTypes);
                 ReturnMessage();
                 Console.Clear();
                 break;
 
             case "4":
                 Console.Clear();
+                UpdateProduct(products, productTypes);
                 ReturnMessage();
                 Console.Clear();
                 break;
@@ -123,7 +126,7 @@ void DisplayAllProducts(List<Product> products, List<ProductType> productTypes)
     {
         string title = productTypes.First(p => p.Id == products[i].ProductTypeId).Title;
         
-        Console.WriteLine($"{i}. {products[i].Name} Price: ${products[i].Price} Type: {title}");
+        Console.WriteLine($"{i}. {products[i].Name} Price: {products[i].Price:C} Type: {title}");
     }
 }
 
@@ -151,12 +154,122 @@ void DeleteProduct(List<Product> products, List<ProductType> productTypes)
 
 void AddProduct(List<Product> products, List<ProductType> productTypes)
 {
-    throw new NotImplementedException();
+    bool readResult = false;
+    string name = null;    
+    decimal price = 0M;
+    int productTypeId = 0;
+    
+
+    while (!readResult)
+    {
+        Console.WriteLine("Please enter a name for the product:");
+        name = Console.ReadLine();
+        if (string.IsNullOrEmpty(name))
+        {
+            Console.WriteLine("Input cannot be blank. Please try again\n");
+        }
+        else
+        {
+            readResult = true;
+        }
+    }
+    
+    readResult = false;
+    while(!readResult)
+    {
+        Console.WriteLine("\nPlease enter a price for the product:");
+        readResult = decimal.TryParse(Console.ReadLine(), out price);
+        if (!readResult)
+        {
+            Console.WriteLine("\nPlease only input numbers.");
+        }
+    }
+
+    readResult = false;
+    while(!readResult)
+    {
+        Console.WriteLine("\nPlease choose a product type: ");
+        for (int i = 0; i < productTypes.Count; i++)
+        {
+            Console.WriteLine($"{productTypes[i].Id}. {productTypes[i].Title}");
+        }
+        readResult = int.TryParse(Console.ReadLine(), out productTypeId);
+        if (!readResult)
+        {
+            Console.WriteLine($"\nPlease select only the numbers listed");
+        }
+    }
+
+    Product newProduct = new()
+    {
+        Name = name,
+        Price = price,
+        ProductTypeId = productTypeId
+    };
+
+    products.Add(newProduct);
+
+    Console.WriteLine($"{name} has been added");
 }
 
 void UpdateProduct(List<Product> products, List<ProductType> productTypes)
 {
-    throw new NotImplementedException();
+    bool readResult = false;
+    
+    Console.WriteLine($"Please enter the number of the product you would like to update (1-{products.Count}):");
+    DisplayAllProducts(products, productTypes);
+
+    while (!readResult)
+    {
+        string updatedName = null;
+        decimal updatedPrice = 0M;
+        int updatedProductTypeId = 0;
+
+        readResult = int.TryParse(Console.ReadLine(), out int choice);
+        if (readResult && choice >= 0 && choice < products.Count)
+        {
+            do
+            {    
+                Product productUpdate = products[choice];
+
+                Console.WriteLine("Please enter updated product name:\n");
+                updatedName = Console.ReadLine();
+                if (!string.IsNullOrEmpty(updatedName))
+                {
+                    productUpdate.Name = updatedName;
+                }
+
+                Console.WriteLine("Please enter updated product price:\n");
+                string price = Console.ReadLine();
+                if (!string.IsNullOrEmpty(price))
+                {
+                    if (decimal.TryParse(price, out updatedPrice))
+                    {
+                        productUpdate.Price = updatedPrice;
+                    }
+                }
+
+                Console.WriteLine("\nPlease choose updated product type: ");
+                for (int i = 0; i < productTypes.Count; i++)
+                {
+                    Console.WriteLine($"{productTypes[i].Id}. {productTypes[i].Title}");
+                }
+                string productTypeId = Console.ReadLine();
+                if (!string.IsNullOrEmpty(productTypeId))
+                {
+                    if(int.TryParse(productTypeId, out updatedProductTypeId))
+                    {
+                        productUpdate.ProductTypeId = updatedProductTypeId;
+                    }
+                }
+
+                Console.WriteLine("Product details updated");
+                readResult = true;
+            }
+            while(!readResult);
+        }
+    }
+
 }
 
 void ReturnMessage()
