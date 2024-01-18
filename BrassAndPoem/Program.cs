@@ -1,7 +1,6 @@
-﻿using ProductTypes;
-using Products;
+﻿using Products;
+using ProductTypes;
 
-//create a "products" variable here to include at least five Product instances. Give them appropriate ProductTypeIds.
 List<Product> products = new()
 {
     new Product()
@@ -36,7 +35,6 @@ List<Product> products = new()
     }
 };
 
-//create a "productTypes" variable here with a List of ProductTypes, and add "Brass" and "Poem" types to the List.
 List<ProductType> productTypes = new()
 {
     new ProductType()
@@ -51,14 +49,12 @@ List<ProductType> productTypes = new()
     }
 };
 
-//put your greeting here
 string welcome = "\n\t\t\tWelcome to Brass and Poem\n\tThe only place to find the best poetry and brass instruments";
 
 Console.WriteLine(welcome);
 DisplayMenu();
 
 
-//implement your loop here
 void DisplayMenu()
 {
     Console.WriteLine("\nPlease choose an option:");
@@ -121,7 +117,7 @@ void DisplayAllProducts(List<Product> products, List<ProductType> productTypes)
     for (int i = 0; i < products.Count; i++)
     {
         string title = productTypes.First(p => p.Id == products[i].ProductTypeId).Title;
-        
+
         Console.WriteLine($"{i}. {products[i].Name} Price: {products[i].Price:C} Type: {title}");
     }
 }
@@ -145,16 +141,15 @@ void DeleteProduct(List<Product> products, List<ProductType> productTypes)
         {
             Console.WriteLine($"You entered and invalid option. Please try again using 0-{products.Count - 1}.");
         }
-    }    
+    }
 }
 
 void AddProduct(List<Product> products, List<ProductType> productTypes)
 {
     bool readResult = false;
-    string name = null;    
+    string name = null;
     decimal price = 0M;
     int productTypeId = 0;
-    
 
     while (!readResult)
     {
@@ -169,9 +164,9 @@ void AddProduct(List<Product> products, List<ProductType> productTypes)
             readResult = true;
         }
     }
-    
+
     readResult = false;
-    while(!readResult)
+    while (!readResult)
     {
         Console.WriteLine("\nPlease enter a price for the product:");
         readResult = decimal.TryParse(Console.ReadLine(), out price);
@@ -182,7 +177,7 @@ void AddProduct(List<Product> products, List<ProductType> productTypes)
     }
 
     readResult = false;
-    while(!readResult)
+    while (!readResult)
     {
         Console.WriteLine("\nPlease choose a product type: ");
         for (int i = 0; i < productTypes.Count; i++)
@@ -211,7 +206,7 @@ void AddProduct(List<Product> products, List<ProductType> productTypes)
 void UpdateProduct(List<Product> products, List<ProductType> productTypes)
 {
     bool readResult = false;
-    
+
     Console.WriteLine($"Please enter the number of the product you would like to update (1-{products.Count}):");
     DisplayAllProducts(products, productTypes);
 
@@ -225,7 +220,7 @@ void UpdateProduct(List<Product> products, List<ProductType> productTypes)
         if (readResult && choice >= 0 && choice < products.Count)
         {
             do
-            {    
+            {
                 Product productUpdate = products[choice];
 
                 Console.WriteLine("Please enter updated product name:\n");
@@ -253,7 +248,7 @@ void UpdateProduct(List<Product> products, List<ProductType> productTypes)
                 string productTypeId = Console.ReadLine();
                 if (!string.IsNullOrEmpty(productTypeId))
                 {
-                    if(int.TryParse(productTypeId, out updatedProductTypeId))
+                    if (int.TryParse(productTypeId, out updatedProductTypeId))
                     {
                         productUpdate.ProductTypeId = updatedProductTypeId;
                     }
@@ -262,7 +257,7 @@ void UpdateProduct(List<Product> products, List<ProductType> productTypes)
                 Console.WriteLine("Product details updated");
                 readResult = true;
             }
-            while(!readResult);
+            while (!readResult);
         }
     }
 
